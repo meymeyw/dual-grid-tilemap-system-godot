@@ -1,8 +1,9 @@
-extends TileMap
+extends Node2D
 
 class_name DualGridTilemap
 
-@export var displayTilemap : TileMap
+@onready var worldLayer : TileMapLayer = $WorldLayer
+@export var displayTilemap : TileMapLayer # point this at one of your display layers
 @export var grassPlaceholderAtlasCoord : Vector2i
 @export var dirtPlaceholderAtlasCoord : Vector2i
 
@@ -37,18 +38,18 @@ func _ready():
 
 func _reloadDisplayTiles():
 	# Refresh all display tiles
-	for coord : Vector2i in get_used_cells(0):
+	for coord : Vector2i in worldLayer.get_used_cells():
 		setDisplayTile(coord)
 
 func SetTile(coords: Vector2i, atlasCoords: Vector2i):
-	set_cell(0, coords, 0, atlasCoords);
+	worldLayer.set_cell(coords, 0, atlasCoords)
 	setDisplayTile(coords)
 
 func setDisplayTile(pos: Vector2i):
 	var i: int = 0
 	i += 1
 	var newPos: Vector2i = pos + NEIGHBOURS[i]
-	displayTilemap.set_cell(0, newPos, 1, calculateDisplayTile(newPos))
+	displayTilemap.set_cell(newPos, 0, calculateDisplayTile(newPos), 0)
 
 func calculateDisplayTile(coords: Vector2i):
 	# get 4 world tile neighbours
@@ -61,7 +62,7 @@ func calculateDisplayTile(coords: Vector2i):
 	return neighboursToAtlasCoord[str(topLeft, ", ", topRight, ", ", botLeft, ", ", botRight)]
 
 func getWorldTile(coords: Vector2i):
-	var atlasCoord = get_cell_atlas_coords(0, coords)
+	var atlasCoord = worldLayer.get_cell_atlas_coords(coords)
 	if atlasCoord == grassPlaceholderAtlasCoord:
 		return "Grass"
 	else:
