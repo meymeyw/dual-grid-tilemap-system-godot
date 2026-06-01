@@ -56,8 +56,14 @@ shader = ExtResource("6_atlul")
 
 [node name="Node2D" type="Node2D" unique_id=1124298093]
 
-[node name="TileMapLayers" type="Node2D" parent="." unique_id=1116438372]
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=1116438372 node_paths=PackedStringArray("worldMapLayer", "dirtDisplayMapLayer", "sandDisplayMapLayer", "grassDisplayMapLayer")]
 script = ExtResource("1_8ju71")
+worldMapLayer = NodePath("WorldLayer")
+dirtDisplayMapLayer = NodePath("DirtDisplayLayer")
+sandDisplayMapLayer = NodePath("SandDisplayLayer")
+grassDisplayMapLayer = NodePath("GrassDisplayLayer")
+dirtPlaceholderAtlasCoords = Vector2i(1, 0)
+sandPlaceholderAtlasCoords = Vector2i(2, 0)
 
 [node name="WorldLayer" type="TileMapLayer" parent="TileMapLayers" unique_id=1072017996]
 use_parent_material = true
@@ -91,12 +97,14 @@ tile_set = SubResource("TileSet_lly5d")
 anchor_mode = 0
 zoom = Vector2(2, 2)
 
-[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=1652641046]
+[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=1652641046 node_paths=PackedStringArray("dualGridTilemap")]
 sprite_frames = SubResource("SpriteFrames_mv6ow")
 autoplay = "default"
 frame = 1
 frame_progress = 0.561599
 script = ExtResource("5_xb4mg")
+dualGridTilemap = NodePath("../TileMapLayers")
+metadata/_edit_lock_ = true
 
 [node name="GridShader" type="Sprite2D" parent="." unique_id=1245790310]
 visible = false
@@ -107,7 +115,7 @@ texture = ExtResource("6_e78ew")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=38605333]
 
-[node name="CheckButton" type="CheckButton" parent="CanvasLayer" unique_id=679916954]
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer" unique_id=679916954 node_paths=PackedStringArray("gridSprite")]
 offset_left = 7.0
 offset_top = 4.0
 offset_right = 185.0
@@ -128,6 +136,7 @@ theme_override_icons/checked = ExtResource("9_etm7v")
 theme_override_icons/unchecked = ExtResource("10_iatsy")
 text = "Toggle grid"
 script = ExtResource("11_6t1o7")
+gridSprite = NodePath("../../GridShader")
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=269881399]
 anchors_preset = 7
